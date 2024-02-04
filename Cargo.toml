@@ -13,12 +13,12 @@ name = "pornvir"
 path = "src/main.rs"
 
 [dependencies]
-anyhow = "1.0.79"
-enigo = "0.1.3"
 image = "0.24.8"
-rand = "0.8.5"
-reqwest = "0.11.24"
-tokio = { version = "1.36.0", features = ["full"] }
+# anyhow = "1.0.79"
+# enigo = "0.1.3"
+# rand = "0.8.5"
+# reqwest = "0.11.24"
+# tokio = { version = "1.36.0", features = ["full"] }
 
 [dependencies.windows]
 version = "0.52.0"

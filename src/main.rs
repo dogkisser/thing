@@ -4,25 +4,28 @@
 // use enigo::{Enigo, Key, KeyboardControllable};
 // use std::{path::PathBuf, time::Duration};
 
-#[tokio::main]
-async fn main() -> anyhow::Result<()> {
-    println!("executed as exe");
-    // let all_dirs = std::fs::read_dir("C:/")?
-    //     .flatten()
-    //     .filter(|p| p.metadata().is_ok_and(|m| m.is_dir()))
-    //     .map(|p| p.path())
-    //     .collect::<Vec<PathBuf>>();
-
-    // #[cfg(debug_assertions)]
-    // let delay = Duration::from_secs(5);
-    // #[cfg(not(debug_assertions))]
-    // let delay = Duration::from_secs(rand::thread_rng().gen_range(30..120) * 60);
-    // tokio::time::sleep(delay).await;
-
-    // type_out("test!")?;
-
-    Ok(())
+fn main() {
 }
+
+// #[tokio::main]
+// async fn main() -> anyhow::Result<()> {
+//     println!("executed as exe");
+//     // let all_dirs = std::fs::read_dir("C:/")?
+//     //     .flatten()
+//     //     .filter(|p| p.metadata().is_ok_and(|m| m.is_dir()))
+//     //     .map(|p| p.path())
+//     //     .collect::<Vec<PathBuf>>();
+
+//     // #[cfg(debug_assertions)]
+//     // let delay = Duration::from_secs(5);
+//     // #[cfg(not(debug_assertions))]
+//     // let delay = Duration::from_secs(rand::thread_rng().gen_range(30..120) * 60);
+//     // tokio::time::sleep(delay).await;
+
+//     // type_out("test!")?;
+
+//     Ok(())
+// }
 
 // fn type_out(inp: &str) -> Result<()> {
 //     unsafe { BlockInput(true) }?;

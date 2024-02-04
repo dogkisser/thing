@@ -1,9 +1,6 @@
-## Have
-
-- type things out automatically while blocking user input and hit enter
-
 ## Want
 
+- type things out automatically while blocking user input and hit enter
 - save porn in random places on the disk
 - manipulate or text or censor text on the clipboard
 - replace images with porn
