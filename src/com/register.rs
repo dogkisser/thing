@@ -5,12 +5,11 @@ use windows::{
     Win32::{
         Foundation::{CLASS_E_CLASSNOTAVAILABLE, E_POINTER, S_FALSE, S_OK},
         UI::Shell::{SHChangeNotify, SHCNE_ASSOCCHANGED, SHCNF_IDLIST},
-        System::Registry::*,
+        System::{Com::IClassFactory, Registry::*},
     },
 };
 
 #[no_mangle]
-/// Pornvir's CLSID, {69694201-430e-4274-bbc8-4f6819f52960}
 pub static CLSID_Pornvir: GUID = GUID {
     data1: 0x6969_4201,
     data2: 0x430E,
@@ -49,7 +48,7 @@ pub unsafe extern "stdcall" fn DllGetClassObject(
     }
     *ppv = std::ptr::null_mut();
 
-    let factory: windows::Win32::System::Com::IClassFactory = crate::PornvirFactory{}.into();
+    let factory: IClassFactory = crate::PornvirFactory{}.into();
     factory.query(riid, ppv)
 }
 

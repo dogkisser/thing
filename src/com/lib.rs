@@ -1,4 +1,4 @@
-//! Pornvir's DLL component for interfacing with the system via shell extensions etc.
+//! Pornvir's DLL component for interfacing with the system via COM
 #![allow(
     non_snake_case,
     clippy::not_unsafe_ptr_arg_deref,
@@ -32,7 +32,9 @@ static PORNVIR_REF_COUNT: AtomicU64 = AtomicU64::new(0);
 #[implement(IClassFactory)]
 pub struct PornvirFactory;
 #[implement(IThumbnailProvider, IInitializeWithStream)]
-pub struct Pornvir;
+pub struct Pornvir {
+    bitmap: std::sync::RwLock<Vec<u8>>,
+}
 
 // For debugging :3c
 #[macro_export]
@@ -92,7 +94,7 @@ pub fn refs() -> u64 {
 impl Pornvir {
     fn new() -> Self {
         increment_refs();
-        Self { }
+        Self { bitmap: Vec::new().into(), }
     }
 }
 

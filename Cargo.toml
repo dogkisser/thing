@@ -39,3 +39,9 @@ features = [
     "Win32_UI_Shell_PropertiesSystem",
     "Win32_Graphics_Gdi"
 ]
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+strip = true
