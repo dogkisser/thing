@@ -6,8 +6,10 @@ use windows::{
     },
 };
 
+// This trait impl is necessary for IThumbnailProvider because it naively assumes we care about
+// the actual file contents~
 impl IInitializeWithStream_Impl for crate::Pornvir {
-    fn Initialize(&self, pstream: Option<&IStream>, grfmode: u32) -> Result<()> {
+    fn Initialize(&self, _pstream: Option<&IStream>, _grfmode: u32) -> Result<()> {
         Ok(())
     }
 }

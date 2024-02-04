@@ -1,3 +1,7 @@
+## Kinda working
+
+- replace image thumbnails with porn
+
 ## Want
 
 - type things out automatically while blocking user input and hit enter
